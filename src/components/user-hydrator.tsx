@@ -5,22 +5,25 @@ import { usePathname, useRouter } from "next/navigation";
 import { useUserStore } from "@/store/auth";
 import api from "@/service/axios";
 
-const PUBLIC_ROUTES = ["/login", "/register"];
+const PROTECTED_ROUTES = ["/anjay"];
 
 export function UserHydrator() {
-  const { setUser } = useUserStore();
+  const { setUser, setLoading } = useUserStore();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    if (PUBLIC_ROUTES.includes(pathname)) return;
-
     const fetchUser = async () => {
+      setLoading(true);
       try {
         const res = await api.get("/me");
         setUser(res.data);
       } catch {
-        router.push("/login");
+        if (PROTECTED_ROUTES.includes(pathname)) {
+          router.push("/login");
+        }
+      } finally {
+        setLoading(false);
       }
     };
 

@@ -3,9 +3,10 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { UserHydrator } from "@/components/user-hydrator";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ReactLenis } from "@/lib/lenis";
 
 export const metadata: Metadata = {
-  title: "Reuni Akbar",
+  title: "Memory Lane",
   description: "Website Reuni Akbar",
 };
 
@@ -16,13 +17,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased`}>
-        <UserHydrator />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <main>{children}</main>
-        </ThemeProvider>
-        <Toaster richColors />
-      </body>
+      <ReactLenis root>
+        <body className={`antialiased`}>
+          <UserHydrator />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <main>{children}</main>
+          </ThemeProvider>
+          <Toaster richColors />
+        </body>
+      </ReactLenis>
     </html>
   );
 }
